@@ -12,6 +12,10 @@ struct ContentView: View {
     @State private var showingResetAlert = false
     @State private var showingClickedAlert = false
     
+    @State var thisItemNames = ""
+    @State var thisItemPrices = 0
+    
+    @StateObject var itemVM: ItemViewModel
     var body: some View {
         NavigationView{
             VStack{
@@ -93,64 +97,64 @@ struct ContentView: View {
                         
                         Spacer()
                         
-                        NavigationLink(destination: EditMenuView()) {
-                            HStack{
-                                Image(systemName: "pencil")
-                                Text("Edit Menu")
-                            }
-                        }
+                        //                        NavigationLink(destination: EditMenuView()) {
+                        //                            HStack{
+                        //                                Image(systemName: "pencil")
+                        //                                Text("Edit Menu")
+                        //                            }
+                        //                        }
                         
                     }
                     .padding(.horizontal)
                     
                     ScrollView(.horizontal){
-                        VStack{
-                            ForEach(1..<3){ index in
-                                HStack{
-                                    ForEach(1..<6){ index in
-                                        Button{
-                                            showingClickedAlert = true
-                                        } label: {
-                                            VStack{
-                                                Image("americano")
-                                                    .resizable()
-                                                    .scaledToFill()
-                                                    .frame(width: 80, height: 80, alignment: .bottomTrailing)
-                                                    .clipped()
-                                                
-                                                Text("Americano")
-                                                    .font(.caption)
-                                                    .fontWeight(.bold)
-                                                    .foregroundColor(.black)
-                                                
-                                                Text("Rp 25.000")
-                                                    .font(.caption)
-                                                    .foregroundColor(.black)
-                                                
-                                            }
-                                            .padding()
-                                            .background(.white)
-                                            .cornerRadius(8)
-                                        }
-                                        .alert("Add Item", isPresented: $showingClickedAlert, actions: {
-                                            Button("Yes", action: {
-                                                totalTodayIncome = totalTodayIncome + 25000
-                                            })
-                                            Button("Cancel", role: .cancel, action: {})
-                                        }, message: {
-                                            Text("Are you sure you want to add the item?")
-                                        })
+                        HStack{
+                            ForEach(itemVM.itemArr, content: { item in
+                                Button{
+                                    showingClickedAlert = true
+                                    thisItemNames = item.name
+                                    thisItemPrices = item.price
+                                } label: {
+                                    VStack{
+                                        
+                                        Image("americano")
+                                            .resizable()
+                                            .scaledToFill()
+                                            .frame(width: 80, height: 80, alignment: .bottomTrailing)
+                                            .clipped()
+                                            .cornerRadius(4)
+                                        
+                                        Text(item.name)
+                                            .font(.caption)
+                                            .fontWeight(.bold)
+                                            .foregroundColor(.black)
+                                        
+                                        Text("Rp " + item.price.description)
+                                            .font(.caption)
+                                            .foregroundColor(.black)
                                         
                                     }
+                                    .padding()
+                                    .background(.white)
+                                    .cornerRadius(8)
+                                  
                                 }
-                            }
-                            
+                                
+                                .alert("Add Item", isPresented: $showingClickedAlert, actions: {
+                                    Button("Yes", action: {
+                                        totalTodayIncome = totalTodayIncome + thisItemPrices
+                                    })
+                                    Button("Cancel", role: .cancel, action: {})
+                                }, message: {
+                                    Text("Are you sure you want to add the item? " + thisItemNames + " " + String(thisItemPrices))
+                                })
+                                      
+                            })
                         }
                         .padding(.horizontal)
                         
                     }
                     .scrollIndicators(ScrollIndicatorVisibility.hidden)
-                    
                 }
                 .padding(.top)
                 
@@ -169,20 +173,13 @@ struct ContentView: View {
                         HStack{
                             Text("Hot Tea")
                                 .padding()
+                            
                             Spacer()
                             
-                            VStack(alignment: .trailing){
-                                Text("Rp 5.000")
-                                    .padding(.horizontal)
-                                    .font(.caption)
-                                Text("x1")
-                                    .padding(.horizontal)
-                                    .font(.caption)
-                            }
-                            
-                            
+                            Text("Rp 5.000")
+                                .padding(.horizontal)
                         }
-                        
+                        .font(.caption)
                     }
                     .background(.white)
                     .cornerRadius(8)
@@ -197,10 +194,15 @@ struct ContentView: View {
         .preferredColorScheme(.light)
         
     }
+    
+    
+    
 }
+
+
 
 struct ContentView_Previews: PreviewProvider {
     static var previews: some View {
-        ContentView()
+        ContentView(itemVM: ItemViewModel())
     }
 }
