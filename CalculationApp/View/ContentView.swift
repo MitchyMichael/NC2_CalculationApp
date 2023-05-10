@@ -16,10 +16,18 @@ struct ContentView: View {
     @State var thisItemPrices = 0
     
     @StateObject var itemVM: ItemViewModel
+    @StateObject var recentItemsVM: RecentItemsViewModel
+    
+    let rows = [
+        GridItem(.fixed(150)),
+        GridItem(.fixed(150))
+    ]
+    
     var body: some View {
         NavigationView{
             VStack{
-                // Blue Gradient Card ==============================================
+                
+                // Blue Gradient Card =======================================================
                 VStack{
                     HStack{
                         Image(systemName: "opticaldiscdrive")
@@ -67,6 +75,7 @@ struct ContentView: View {
                         .alert("Reset Income", isPresented: $showingResetAlert, actions: {
                             Button("Reset", role: .destructive, action: {
                                 totalTodayIncome = 0
+                                recentItemsVM.itemArr = []
                             })
                             Button("Cancel", role: .cancel, action: {})
                         }, message: {
@@ -97,18 +106,18 @@ struct ContentView: View {
                         
                         Spacer()
                         
-                        //                        NavigationLink(destination: EditMenuView()) {
-                        //                            HStack{
-                        //                                Image(systemName: "pencil")
-                        //                                Text("Edit Menu")
-                        //                            }
-                        //                        }
+                        NavigationLink(destination: EditMenuView()) {
+                            HStack{
+                                Image(systemName: "pencil")
+                                Text("Edit Menu")
+                            }
+                        }
                         
                     }
                     .padding(.horizontal)
                     
                     ScrollView(.horizontal){
-                        HStack{
+                        LazyHGrid(rows: rows, alignment: .center){
                             ForEach(itemVM.itemArr, content: { item in
                                 Button{
                                     showingClickedAlert = true
@@ -116,11 +125,10 @@ struct ContentView: View {
                                     thisItemPrices = item.price
                                 } label: {
                                     VStack{
-                                        
-                                        Image("americano")
+                                        Image(item.image)
                                             .resizable()
                                             .scaledToFill()
-                                            .frame(width: 80, height: 80, alignment: .bottomTrailing)
+                                            .frame(width: 80, height: 80, alignment: .center)
                                             .clipped()
                                             .cornerRadius(4)
                                         
@@ -128,6 +136,7 @@ struct ContentView: View {
                                             .font(.caption)
                                             .fontWeight(.bold)
                                             .foregroundColor(.black)
+                                            .frame(width: 80)
                                         
                                         Text("Rp " + item.price.description)
                                             .font(.caption)
@@ -137,22 +146,28 @@ struct ContentView: View {
                                     .padding()
                                     .background(.white)
                                     .cornerRadius(8)
-                                  
+                                    
                                 }
                                 
                                 .alert("Add Item", isPresented: $showingClickedAlert, actions: {
                                     Button("Yes", action: {
                                         totalTodayIncome = totalTodayIncome + thisItemPrices
+                                        
+                                        let newItem = RecentItems(name: thisItemNames, price: thisItemPrices)
+                                        
+                                        var mutableItemArr = recentItemsVM.itemArr
+                                        mutableItemArr.append(newItem)
+                                        
+                                        recentItemsVM.itemArr = mutableItemArr
                                     })
                                     Button("Cancel", role: .cancel, action: {})
                                 }, message: {
                                     Text("Are you sure you want to add the item? " + thisItemNames + " " + String(thisItemPrices))
                                 })
-                                      
+                                
                             })
                         }
                         .padding(.horizontal)
-                        
                     }
                     .scrollIndicators(ScrollIndicatorVisibility.hidden)
                 }
@@ -169,21 +184,35 @@ struct ContentView: View {
                     }
                     .padding(.horizontal)
                     
-                    ForEach(1..<4){ index in
-                        HStack{
-                            Text("Hot Tea")
-                                .padding()
+                    ScrollView{
+                        VStack{
+                            if (recentItemsVM.itemArr.count == 0) {
+                                VStack{
+                                    Text("Empty")
+                                        .foregroundColor(.secondary)
+                                        .frame(height: 150)
+                                }
+                                
+                            } else {
+                                ForEach(recentItemsVM.itemArr.reversed(), content: { recentItem in
+                                    HStack{
+                                        Text(recentItem.name)
+                                            .padding()
+                                        
+                                        Spacer()
+                                        
+                                        Text("Rp " + recentItem.price.description + " x 1")
+                                            .padding(.horizontal)
+                                    }
+                                    .font(.caption)
+                                    .background(.white)
+                                    .cornerRadius(8)
+                                    .padding(.horizontal)
+                                })
+                            }
                             
-                            Spacer()
-                            
-                            Text("Rp 5.000")
-                                .padding(.horizontal)
                         }
-                        .font(.caption)
                     }
-                    .background(.white)
-                    .cornerRadius(8)
-                    .padding(.horizontal)
                 }
                 .padding(.top)
                 Spacer()
@@ -194,15 +223,12 @@ struct ContentView: View {
         .preferredColorScheme(.light)
         
     }
-    
-    
-    
 }
 
 
 
 struct ContentView_Previews: PreviewProvider {
     static var previews: some View {
-        ContentView(itemVM: ItemViewModel())
+        ContentView(itemVM: ItemViewModel(), recentItemsVM: RecentItemsViewModel())
     }
 }
