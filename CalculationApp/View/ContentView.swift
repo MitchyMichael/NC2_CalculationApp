@@ -24,14 +24,14 @@ struct ContentView: View {
     ]
     
     var body: some View {
-        NavigationView{
+        NavigationStack{
             VStack{
                 
                 // Blue Gradient Card =======================================================
                 VStack{
                     HStack{
                         Image(systemName: "opticaldiscdrive")
-                        Text("Daily Income Tracker")
+                        Text("Daily Earning Tracker")
                         Spacer()
                         
                     }
@@ -42,7 +42,7 @@ struct ContentView: View {
                     HStack{
                         VStack{
                             HStack{
-                                Text("Your Income Today")
+                                Text("Total Earning Today")
                                     .font(.caption)
                                     .padding(.horizontal)
                                     .padding(.top)
@@ -65,21 +65,21 @@ struct ContentView: View {
                         Button(action: {
                             showingResetAlert = true
                         }, label: {
-                            Text("Reset Income")
+                            Text("Reset Earning")
                                 .font(.caption)
                                 .fontWeight(.bold)
                                 .foregroundColor(.white)
                                 .padding()
                             
                         })
-                        .alert("Reset Income", isPresented: $showingResetAlert, actions: {
+                        .alert("Reset Earning", isPresented: $showingResetAlert, actions: {
                             Button("Reset", role: .destructive, action: {
                                 totalTodayIncome = 0
                                 recentItemsVM.itemArr = []
                             })
                             Button("Cancel", role: .cancel, action: {})
                         }, message: {
-                            Text("Are you sure you want to reset the income?")
+                            Text("Are you sure you want to reset your earning?")
                         })
                         
                         .background(
@@ -106,7 +106,7 @@ struct ContentView: View {
                         
                         Spacer()
                         
-                        NavigationLink(destination: EditMenuView()) {
+                        NavigationLink(destination: EditMenuView(itemVM: itemVM)) {
                             HStack{
                                 Image(systemName: "pencil")
                                 Text("Edit Menu")
@@ -117,7 +117,7 @@ struct ContentView: View {
                     .padding(.horizontal)
                     
                     ScrollView(.horizontal){
-                        LazyHGrid(rows: rows, alignment: .center){
+                        LazyHGrid(rows: rows, alignment: .center) {
                             ForEach(itemVM.itemArr, content: { item in
                                 Button{
                                     showingClickedAlert = true
@@ -176,7 +176,7 @@ struct ContentView: View {
                 // Recent Income Section =====================================================
                 VStack{
                     HStack{
-                        Text("Recent Income")
+                        Text("Earning History")
                             .font(.title2)
                             .fontWeight(.bold)
                         
@@ -184,35 +184,36 @@ struct ContentView: View {
                     }
                     .padding(.horizontal)
                     
-                    ScrollView{
+                    
+                    if (recentItemsVM.itemArr.count == 0) {
                         VStack{
-                            if (recentItemsVM.itemArr.count == 0) {
-                                VStack{
-                                    Text("Empty")
-                                        .foregroundColor(.secondary)
-                                        .frame(height: 150)
-                                }
-                                
-                            } else {
-                                ForEach(recentItemsVM.itemArr.reversed(), content: { recentItem in
-                                    HStack{
-                                        Text(recentItem.name)
-                                            .padding()
-                                        
-                                        Spacer()
-                                        
-                                        Text("Rp " + recentItem.price.description + " x 1")
-                                            .padding(.horizontal)
-                                    }
-                                    .font(.caption)
-                                    .background(.white)
-                                    .cornerRadius(8)
-                                    .padding(.horizontal)
-                                })
-                            }
-                            
+                            Text("Empty")
+                                .foregroundColor(.secondary)
+                                .frame(height: 150)
                         }
+                        
+                    } else {
+                        ScrollView{
+                            ForEach(recentItemsVM.itemArr.reversed(), content: { recentItem in
+                                HStack{
+                                    Text(recentItem.name)
+                                    Spacer()
+                                    Text("Rp " + recentItem.price.description)
+                                }
+                                .padding(.top)
+                                .padding(.horizontal)
+                                .font(.caption)
+                                Divider()
+                                    .padding(.horizontal)
+                            })
+                        }
+                        .background(.white)
+                        .cornerRadius(8)
+                        .padding(.horizontal)
+                        
                     }
+
+                    
                 }
                 .padding(.top)
                 Spacer()

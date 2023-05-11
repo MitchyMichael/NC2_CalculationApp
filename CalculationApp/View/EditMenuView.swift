@@ -8,31 +8,44 @@
 import SwiftUI
 
 struct EditMenuView: View {
+    @State var showingClickedAlert = false
+    @State var isPresentedSheet = false
+    
+    @State var thisItemNames = ""
+    @State var thisItemPrices = 0
+    
+    @StateObject var itemVM: ItemViewModel
+    
+    let rows = [
+        GridItem(.fixed(110)),
+        GridItem(.fixed(110)),
+        GridItem(.fixed(110))
+    ]
     
     var body: some View {
-        @State var showingClickedAlert = false
-        
-        @State var thisItemNames = ""
-        @State var thisItemPrices = 0
-        
-        @StateObject var itemVM: ItemViewModel
-
-        let rows = [
-            GridItem(.fixed(150)),
-            GridItem(.fixed(150))
-        ]
-        
-        NavigationView{
+        NavigationStack{
             VStack{
                 HStack{
                     Text("Edit Menu")
                         .font(.largeTitle)
                         .fontWeight(.bold)
                     Spacer()
+                    
+                    Button{
+                        isPresentedSheet = true
+                    } label: {
+                        HStack{
+                            Image(systemName: "plus")
+                            Text("Add Item")
+                        }
+                    }
+                    .sheet(isPresented: $isPresentedSheet){
+                        AddMenuView(itemVM: itemVM)
+                    }
                 }
-                
-                ScrollView(.horizontal){
-                    LazyHGrid(rows: rows, alignment: .center){
+
+                ScrollView{
+                    LazyVGrid(columns: rows){
                         ForEach(itemVM.itemArr, content: { item in
                             Button{
                                 showingClickedAlert = true
@@ -46,32 +59,33 @@ struct EditMenuView: View {
                                         .frame(width: 80, height: 80, alignment: .center)
                                         .clipped()
                                         .cornerRadius(4)
-                                    
+
                                     Text(item.name)
                                         .font(.caption)
                                         .fontWeight(.bold)
                                         .foregroundColor(.black)
-                                        .frame(width: 80)
-                                    
+                                        .frame(width: 80, height: 10)
+
                                     Text("Rp " + item.price.description)
                                         .font(.caption)
                                         .foregroundColor(.black)
-                                    
+
                                 }
                                 .padding()
                                 .background(.white)
                                 .cornerRadius(8)
-                                
+
                             }
-                            
+
                         })
                     }
-                    .padding(.horizontal)
+
                 }
+                .padding(.horizontal)
                 .scrollIndicators(ScrollIndicatorVisibility.hidden)
                 Spacer()
-                
-                
+
+
             }
             .padding()
             .background(Color(hue: 1.0, saturation: 0.000, brightness: 0.95))
@@ -82,6 +96,6 @@ struct EditMenuView: View {
 
 struct EditMenuView_Previews: PreviewProvider {
     static var previews: some View {
-        EditMenuView()
+        EditMenuView(itemVM: ItemViewModel())
     }
 }

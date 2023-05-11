@@ -15,6 +15,6 @@ struct RecentItems: Identifiable {
 
 class RecentItemsViewModel: ObservableObject {
     var itemArr: [RecentItems] = [
-        
+//        RecentItems(name: "Americano", price: 25000)
     ]
 }

@@ -23,7 +23,6 @@ class ItemViewModel: ObservableObject {
         Items(name: "Mexican Hot Coffee", price: 27000, image: "mexican"),
         Items(name: "Hot Chocolate", price: 35800, image: "hotchocolate"),
         Items(name: "Black Coffee", price: 31000, image: "black"),
-        
     ]
 }
 
