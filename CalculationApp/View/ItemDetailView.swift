@@ -16,7 +16,7 @@ struct ItemDetailView: View {
     var body: some View {
         NavigationStack{
             VStack{
-                Image("cappucino")
+                Image(itemImage)
                     .resizable()
                     .scaledToFill()
                     .frame(maxWidth: .infinity)
