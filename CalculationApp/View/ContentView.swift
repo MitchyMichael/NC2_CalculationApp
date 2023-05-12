@@ -57,7 +57,7 @@ struct ContentView: View {
                                     .padding(.horizontal)
                                     .padding(.bottom)
                                     .foregroundColor(.white)
-                                
+
                                 Spacer()
                             }
                         }
@@ -70,7 +70,7 @@ struct ContentView: View {
                                 .fontWeight(.bold)
                                 .foregroundColor(.white)
                                 .padding()
-                            
+
                         })
                         .alert("Reset Earning", isPresented: $showingResetAlert, actions: {
                             Button("Reset", role: .destructive, action: {
@@ -81,7 +81,7 @@ struct ContentView: View {
                         }, message: {
                             Text("Are you sure you want to reset your earning?")
                         })
-                        
+
                         .background(
                             LinearGradient(gradient: Gradient(colors: [.pink, .yellow]), startPoint: .topLeading, endPoint: .bottomTrailing)
                         )
@@ -125,46 +125,46 @@ struct ContentView: View {
                                     thisItemPrices = item.price
                                 } label: {
                                     VStack{
-                                        Image(item.image)
+                                        Image(item.thisimage)
                                             .resizable()
                                             .scaledToFill()
                                             .frame(width: 80, height: 80, alignment: .center)
                                             .clipped()
                                             .cornerRadius(4)
-                                        
+
                                         Text(item.name)
                                             .font(.caption)
                                             .fontWeight(.bold)
                                             .foregroundColor(.black)
                                             .frame(width: 80)
-                                        
+
                                         Text("Rp " + item.price.description)
                                             .font(.caption)
                                             .foregroundColor(.black)
-                                        
+
                                     }
                                     .padding()
                                     .background(.white)
                                     .cornerRadius(8)
-                                    
+
                                 }
-                                
+
                                 .alert("Add Item", isPresented: $showingClickedAlert, actions: {
                                     Button("Yes", action: {
                                         totalTodayIncome = totalTodayIncome + thisItemPrices
-                                        
+
                                         let newItem = RecentItems(name: thisItemNames, price: thisItemPrices)
-                                        
+
                                         var mutableItemArr = recentItemsVM.itemArr
                                         mutableItemArr.append(newItem)
-                                        
+
                                         recentItemsVM.itemArr = mutableItemArr
                                     })
                                     Button("Cancel", role: .cancel, action: {})
                                 }, message: {
                                     Text("Are you sure you want to add the item? " + thisItemNames + " " + String(thisItemPrices))
                                 })
-                                
+
                             })
                         }
                         .padding(.horizontal)

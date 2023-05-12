@@ -11,6 +11,7 @@
 		FC378CBA2A08C113005B1473 /* Items.swift in Sources */ = {isa = PBXBuildFile; fileRef = FC378CB92A08C113005B1473 /* Items.swift */; };
 		FC378CBC2A0A24CD005B1473 /* RecentItems.swift in Sources */ = {isa = PBXBuildFile; fileRef = FC378CBB2A0A24CD005B1473 /* RecentItems.swift */; };
 		FC378CBE2A0B23DA005B1473 /* AddMenuView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FC378CBD2A0B23DA005B1473 /* AddMenuView.swift */; };
+		FC378CC02A0CE570005B1473 /* ItemDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FC378CBF2A0CE570005B1473 /* ItemDetailView.swift */; };
 		FCBBF9A12A00EFA9005535A8 /* CalculationAppApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = FCBBF9A02A00EFA9005535A8 /* CalculationAppApp.swift */; };
 		FCBBF9A32A00EFA9005535A8 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FCBBF9A22A00EFA9005535A8 /* ContentView.swift */; };
 		FCBBF9A52A00EFA9005535A8 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = FCBBF9A42A00EFA9005535A8 /* Assets.xcassets */; };
@@ -22,6 +23,7 @@
 		FC378CB92A08C113005B1473 /* Items.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Items.swift; sourceTree = "<group>"; };
 		FC378CBB2A0A24CD005B1473 /* RecentItems.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecentItems.swift; sourceTree = "<group>"; };
 		FC378CBD2A0B23DA005B1473 /* AddMenuView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddMenuView.swift; sourceTree = "<group>"; };
+		FC378CBF2A0CE570005B1473 /* ItemDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ItemDetailView.swift; sourceTree = "<group>"; };
 		FCBBF99D2A00EFA9005535A8 /* CalculationApp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = CalculationApp.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		FCBBF9A02A00EFA9005535A8 /* CalculationAppApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalculationAppApp.swift; sourceTree = "<group>"; };
 		FCBBF9A22A00EFA9005535A8 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -46,6 +48,7 @@
 				FCBBF9A22A00EFA9005535A8 /* ContentView.swift */,
 				FC378CB62A04F692005B1473 /* EditMenuView.swift */,
 				FC378CBD2A0B23DA005B1473 /* AddMenuView.swift */,
+				FC378CBF2A0CE570005B1473 /* ItemDetailView.swift */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -159,6 +162,7 @@
 			files = (
 				FC378CBC2A0A24CD005B1473 /* RecentItems.swift in Sources */,
 				FC378CBE2A0B23DA005B1473 /* AddMenuView.swift in Sources */,
+				FC378CC02A0CE570005B1473 /* ItemDetailView.swift in Sources */,
 				FC378CBA2A08C113005B1473 /* Items.swift in Sources */,
 				FCBBF9A32A00EFA9005535A8 /* ContentView.swift in Sources */,
 				FCBBF9A12A00EFA9005535A8 /* CalculationAppApp.swift in Sources */,

@@ -6,7 +6,7 @@
 //
 
 import SwiftUI
-
+import PhotosUI
 struct AddMenuView: View {
     
     @State var newMenuName = ""
@@ -16,7 +16,13 @@ struct AddMenuView: View {
     
     @StateObject var itemVM: ItemViewModel
     
+    @State var selectedItems: [PhotosPickerItem] = []
+    @State var data: Data?
+    
+    @State var shouldShowImagePicker = false
+
     var body: some View {
+        
         NavigationStack{
             HStack{
                 ZStack{
@@ -37,7 +43,7 @@ struct AddMenuView: View {
                         Spacer()
                         
                         Button{
-                            let newItem = Items(name: newMenuName, price: newMenuPrice, image: "cappucino")
+                            let newItem = Items(name: newMenuName, price: newMenuPrice, thisimage: "cappucino")
                             
                             var mutableItemArr = itemVM.itemArr
                             mutableItemArr.append(newItem)
@@ -47,6 +53,9 @@ struct AddMenuView: View {
                             print(itemVM.itemArr)
                             
                             dismiss()
+                            
+                            let newView = ContentView(itemVM: itemVM, recentItemsVM: RecentItemsViewModel())
+                            UIApplication.shared.windows.first?.rootViewController = UIHostingController(rootView: newView)
                         } label: {
                             Text("Add")
                         }
@@ -70,6 +79,42 @@ struct AddMenuView: View {
                         TextField("Menu Price", value: $newMenuPrice, formatter: NumberFormatter()).keyboardType(.numberPad)
                             .multilineTextAlignment(.trailing)
                     }
+                    HStack{
+                        Text("Menu Image")
+                        
+                        Spacer()
+                    
+                        PhotosPicker(
+                            selection: $selectedItems,
+                            maxSelectionCount: 1,
+                            matching: .images
+                        ){
+                            Text("Pick Photo")
+                        }
+                        .onChange(of: selectedItems){ newValue in
+                            
+                            guard let item = selectedItems.first else {
+                                return
+                            }
+                            item.loadTransferable(type: Data.self) { result in
+                                switch result {
+                                case .success(let data):
+                                    if let data = data {
+                                        self.data = data
+                                    } else {
+                                        print("Data is nil")
+                                    }
+                                case .failure(let failure):
+                                    fatalError("\(failure)")
+                                    
+                                }
+                            }
+                        }
+                    }
+                    if let data = data, let uiimage = UIImage(data: data){
+                        Image(uiImage: uiimage).resizable().scaledToFit()
+                        
+                    }
                 }
                 
             }
@@ -80,6 +125,7 @@ struct AddMenuView: View {
         .navigationTitle("Add New Menu")
     }
     
+    
 }
 
 struct AddMenuView_Previews: PreviewProvider {
@@ -87,3 +133,4 @@ struct AddMenuView_Previews: PreviewProvider {
         AddMenuView(itemVM: ItemViewModel())
     }
 }
+

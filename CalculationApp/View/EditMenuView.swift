@@ -13,6 +13,7 @@ struct EditMenuView: View {
     
     @State var thisItemNames = ""
     @State var thisItemPrices = 0
+    @State var thisItemImage = ""
     
     @StateObject var itemVM: ItemViewModel
     
@@ -43,7 +44,7 @@ struct EditMenuView: View {
                         AddMenuView(itemVM: itemVM)
                     }
                 }
-
+                
                 ScrollView{
                     LazyVGrid(columns: rows){
                         ForEach(itemVM.itemArr, content: { item in
@@ -51,41 +52,47 @@ struct EditMenuView: View {
                                 showingClickedAlert = true
                                 thisItemNames = item.name
                                 thisItemPrices = item.price
+                                thisItemImage = item.thisimage
+                                
                             } label: {
                                 VStack{
-                                    Image(item.image)
+                                    Image(item.thisimage)
                                         .resizable()
                                         .scaledToFill()
                                         .frame(width: 80, height: 80, alignment: .center)
                                         .clipped()
                                         .cornerRadius(4)
-
+                                    
                                     Text(item.name)
                                         .font(.caption)
                                         .fontWeight(.bold)
                                         .foregroundColor(.black)
                                         .frame(width: 80, height: 10)
-
+                                    
                                     Text("Rp " + item.price.description)
                                         .font(.caption)
                                         .foregroundColor(.black)
-
+                                    
                                 }
+                                
                                 .padding()
                                 .background(.white)
                                 .cornerRadius(8)
-
+                                
                             }
-
+                            .sheet(isPresented: $showingClickedAlert){
+                                ItemDetailView(itemName: thisItemNames, itemPrice: thisItemPrices, itemImage: thisItemImage)
+                            }
+                            
                         })
                     }
-
+                    
                 }
                 .padding(.horizontal)
                 .scrollIndicators(ScrollIndicatorVisibility.hidden)
                 Spacer()
-
-
+                
+                
             }
             .padding()
             .background(Color(hue: 1.0, saturation: 0.000, brightness: 0.95))
