@@ -8,6 +8,7 @@
 import SwiftUI
 import PhotosUI
 struct AddMenuView: View {
+    @StateObject var totalTodayIncome2: TotalIncome
     
     @State var newMenuName = ""
     @State var newMenuPrice = 0
@@ -15,14 +16,14 @@ struct AddMenuView: View {
     @Environment(\.dismiss) var dismiss
     
     @StateObject var itemVM: ItemViewModel
+    @StateObject var recentItemsVM: RecentItemsViewModel
     
     @State var selectedItems: [PhotosPickerItem] = []
     @State var data: Data?
     
     @State var shouldShowImagePicker = false
-
+    
     var body: some View {
-        
         NavigationStack{
             HStack{
                 ZStack{
@@ -54,8 +55,9 @@ struct AddMenuView: View {
                             
                             dismiss()
                             
-                            let newView = ContentView(itemVM: itemVM, recentItemsVM: RecentItemsViewModel())
+                            let newView = ContentView(totalTodayIncome: totalTodayIncome2, itemVM: itemVM, recentItemsVM: recentItemsVM)
                             UIApplication.shared.windows.first?.rootViewController = UIHostingController(rootView: newView)
+                    
                         } label: {
                             Text("Add")
                         }
@@ -130,7 +132,7 @@ struct AddMenuView: View {
 
 struct AddMenuView_Previews: PreviewProvider {
     static var previews: some View {
-        AddMenuView(itemVM: ItemViewModel())
+        AddMenuView(totalTodayIncome2: TotalIncome(), itemVM: ItemViewModel(), recentItemsVM: RecentItemsViewModel())
     }
 }
 

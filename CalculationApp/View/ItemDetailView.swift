@@ -9,7 +9,7 @@ import SwiftUI
 
 struct ItemDetailView: View {
     
-    @State var itemName: String
+    @State var itemName: String 
     @State var itemPrice: Int
     @State var itemImage: String
     

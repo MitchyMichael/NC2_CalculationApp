@@ -11,7 +11,7 @@ import SwiftUI
 struct CalculationAppApp: App {
     var body: some Scene {
         WindowGroup {
-            ContentView(itemVM: ItemViewModel(), recentItemsVM: RecentItemsViewModel())
+            ContentView(totalTodayIncome: TotalIncome(), itemVM: ItemViewModel(), recentItemsVM: RecentItemsViewModel())
         }
     }
 }

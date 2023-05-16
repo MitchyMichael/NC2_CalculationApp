@@ -8,7 +8,9 @@
 import SwiftUI
 
 struct ContentView: View {
-    @State var totalTodayIncome = 0
+//    @StateObject var totalIncome = TotalIncome()
+    
+    @StateObject var totalTodayIncome: TotalIncome
     @State private var showingResetAlert = false
     @State private var showingClickedAlert = false
     
@@ -51,7 +53,7 @@ struct ContentView: View {
                             }
                             
                             HStack{
-                                Text("Rp " + String(totalTodayIncome))
+                                Text("Rp " + String(totalTodayIncome.totalIncome))
                                     .font(.title)
                                     .fontWeight(.bold)
                                     .padding(.horizontal)
@@ -74,7 +76,7 @@ struct ContentView: View {
                         })
                         .alert("Reset Earning", isPresented: $showingResetAlert, actions: {
                             Button("Reset", role: .destructive, action: {
-                                totalTodayIncome = 0
+                                totalTodayIncome.totalIncome = 0
                                 recentItemsVM.itemArr = []
                             })
                             Button("Cancel", role: .cancel, action: {})
@@ -106,7 +108,7 @@ struct ContentView: View {
                         
                         Spacer()
                         
-                        NavigationLink(destination: EditMenuView(itemVM: itemVM)) {
+                        NavigationLink(destination: EditMenuView(totalTodayIncome3: totalTodayIncome, itemVM: itemVM, recentItemsVM: recentItemsVM)) {
                             HStack{
                                 Image(systemName: "pencil")
                                 Text("Edit Menu")
@@ -151,7 +153,7 @@ struct ContentView: View {
 
                                 .alert("Add Item", isPresented: $showingClickedAlert, actions: {
                                     Button("Yes", action: {
-                                        totalTodayIncome = totalTodayIncome + thisItemPrices
+                                        totalTodayIncome.totalIncome = totalTodayIncome.totalIncome + thisItemPrices
 
                                         let newItem = RecentItems(name: thisItemNames, price: thisItemPrices)
 
@@ -187,7 +189,7 @@ struct ContentView: View {
                     
                     if (recentItemsVM.itemArr.count == 0) {
                         VStack{
-                            Text("Empty")
+                            Text("You Haven't Sold Any Items Yet")
                                 .foregroundColor(.secondary)
                                 .frame(height: 150)
                         }
@@ -230,6 +232,6 @@ struct ContentView: View {
 
 struct ContentView_Previews: PreviewProvider {
     static var previews: some View {
-        ContentView(itemVM: ItemViewModel(), recentItemsVM: RecentItemsViewModel())
+        ContentView(totalTodayIncome: TotalIncome(), itemVM: ItemViewModel(), recentItemsVM: RecentItemsViewModel())
     }
 }

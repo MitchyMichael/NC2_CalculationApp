@@ -8,6 +8,7 @@
 import SwiftUI
 
 struct EditMenuView: View {
+    @StateObject var totalTodayIncome3: TotalIncome
     @State var showingClickedAlert = false
     @State var isPresentedSheet = false
     
@@ -16,6 +17,7 @@ struct EditMenuView: View {
     @State var thisItemImage = ""
     
     @StateObject var itemVM: ItemViewModel
+    @StateObject var recentItemsVM: RecentItemsViewModel
     
     let rows = [
         GridItem(.fixed(110)),
@@ -41,7 +43,7 @@ struct EditMenuView: View {
                         }
                     }
                     .sheet(isPresented: $isPresentedSheet){
-                        AddMenuView(itemVM: itemVM)
+                        AddMenuView(totalTodayIncome2: totalTodayIncome3, itemVM: itemVM, recentItemsVM: recentItemsVM)
                     }
                 }
                 
@@ -103,6 +105,6 @@ struct EditMenuView: View {
 
 struct EditMenuView_Previews: PreviewProvider {
     static var previews: some View {
-        EditMenuView(itemVM: ItemViewModel())
+        EditMenuView(totalTodayIncome3: TotalIncome(), itemVM: ItemViewModel(), recentItemsVM: RecentItemsViewModel())
     }
 }
