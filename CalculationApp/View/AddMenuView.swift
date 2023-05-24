@@ -57,7 +57,6 @@ struct AddMenuView: View {
                             
                             let newView = ContentView(totalTodayIncome: totalTodayIncome2, itemVM: itemVM, recentItemsVM: recentItemsVM)
                             UIApplication.shared.windows.first?.rootViewController = UIHostingController(rootView: newView)
-                    
                         } label: {
                             Text("Add")
                         }

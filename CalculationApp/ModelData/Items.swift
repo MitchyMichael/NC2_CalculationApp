@@ -7,7 +7,7 @@
 
 import Foundation
 
-struct Items: Identifiable {
+struct Items: Identifiable, Equatable {
     var id = UUID()
     var name: String
     var price: Int

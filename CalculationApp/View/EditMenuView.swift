@@ -83,7 +83,7 @@ struct EditMenuView: View {
                                 
                             }
                             .sheet(isPresented: $showingClickedAlert){
-                                ItemDetailView(itemName: thisItemNames, itemPrice: thisItemPrices, itemImage: thisItemImage)
+                                ItemDetailView(itemName: thisItemNames, itemPrice: thisItemPrices, itemImage: thisItemImage, totalTodayIncome4: totalTodayIncome3, itemVM: itemVM, recentItemsVM: recentItemsVM)
                             }
                             
                         })

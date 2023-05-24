@@ -13,6 +13,7 @@ struct ContentView: View {
     @StateObject var totalTodayIncome: TotalIncome
     @State private var showingResetAlert = false
     @State private var showingClickedAlert = false
+    @State private var showingHistoryDetails = false
     
     @State var thisItemNames = ""
     @State var thisItemPrices = 0
@@ -25,23 +26,26 @@ struct ContentView: View {
         GridItem(.fixed(150))
     ]
     
+    let date = Date()
+    
     var body: some View {
         NavigationStack{
             VStack{
                 
                 // Blue Gradient Card =======================================================
                 VStack{
-                    HStack{
+                    HStack (alignment: .top){
                         Image(systemName: "opticaldiscdrive")
                         Text("Daily Earning Tracker")
                         Spacer()
-                        
+                        Text(date, style: .date)
+                            .font(.caption)
                     }
                     .padding(.top)
                     .padding(.horizontal)
                     .foregroundColor(.white)
                     
-                    HStack{
+                    HStack (alignment: .bottom){
                         VStack{
                             HStack{
                                 Text("Total Earning Today")
@@ -71,7 +75,8 @@ struct ContentView: View {
                                 .font(.caption)
                                 .fontWeight(.bold)
                                 .foregroundColor(.white)
-                                .padding()
+                                .padding(.horizontal)
+                                .padding(.vertical, 10)
 
                         })
                         .alert("Reset Earning", isPresented: $showingResetAlert, actions: {
@@ -120,7 +125,7 @@ struct ContentView: View {
                     
                     ScrollView(.horizontal){
                         LazyHGrid(rows: rows, alignment: .center) {
-                            ForEach(itemVM.itemArr, content: { item in
+                            ForEach(itemVM.itemArr.reversed(), content: { item in
                                 Button{
                                     showingClickedAlert = true
                                     thisItemNames = item.name
@@ -139,10 +144,11 @@ struct ContentView: View {
                                             .fontWeight(.bold)
                                             .foregroundColor(.black)
                                             .frame(width: 80)
-
+                                        
                                         Text("Rp " + item.price.description)
                                             .font(.caption)
                                             .foregroundColor(.black)
+                                            
 
                                     }
                                     .padding()
@@ -155,7 +161,7 @@ struct ContentView: View {
                                     Button("Yes", action: {
                                         totalTodayIncome.totalIncome = totalTodayIncome.totalIncome + thisItemPrices
 
-                                        let newItem = RecentItems(name: thisItemNames, price: thisItemPrices)
+                                        let newItem = RecentItems(name: thisItemNames, price: thisItemPrices, time: getTime(), transactionID: getTransactionID(), date: date)
 
                                         var mutableItemArr = recentItemsVM.itemArr
                                         mutableItemArr.append(newItem)
@@ -183,9 +189,21 @@ struct ContentView: View {
                             .fontWeight(.bold)
                         
                         Spacer()
+                        
+                        Button {
+                            showingHistoryDetails = true
+                        } label: {
+                            HStack{
+                                Image(systemName: "globe.asia.australia.fill")
+                                Text("History Details")
+                            }
+                        }
+                        .sheet(isPresented: $showingHistoryDetails){
+                            EarningHistoryView(recentItemsVM: recentItemsVM)
+                        }
+                        
                     }
                     .padding(.horizontal)
-                    
                     
                     if (recentItemsVM.itemArr.count == 0) {
                         VStack{
@@ -198,6 +216,8 @@ struct ContentView: View {
                         ScrollView{
                             ForEach(recentItemsVM.itemArr.reversed(), content: { recentItem in
                                 HStack{
+                                    Text(recentItem.time)
+                                    Divider()
                                     Text(recentItem.name)
                                     Spacer()
                                     Text("Rp " + recentItem.price.description)
@@ -220,12 +240,26 @@ struct ContentView: View {
                 .padding(.top)
                 Spacer()
             }
+            .padding(.top)
             .background(Color(hue: 1.0, saturation: 0.000, brightness: 0.95))
             
         }
         .preferredColorScheme(.light)
         
     }
+    
+    func getTime() -> String {
+        let formatter = DateFormatter()
+        formatter.timeStyle = .short
+        let dateString = formatter.string(from: Date())
+        return dateString
+    }
+    
+    func getTransactionID() -> Int {
+        let transactionID = Int.random(in: 1_000_000_000_000...9_999_999_999_999)
+        return transactionID
+    }
+    
 }
 
 
