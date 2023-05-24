@@ -209,7 +209,7 @@ struct ContentView: View {
                     
                     if (recentItemsVM.itemArr.count == 0) {
                         VStack{
-                            Text("You Haven't Sold Any Items Yet")
+                            Text("You Haven't Add Any Items")
                                 .foregroundColor(.secondary)
                                 .frame(height: 150)
                         }

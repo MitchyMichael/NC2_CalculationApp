@@ -21,94 +21,113 @@ struct ItemDetailView: View {
     
     var body: some View {
         NavigationStack{
-            VStack{
-                Image(itemImage)
-                    .resizable()
-                    .scaledToFill()
-                    .frame(maxWidth: .infinity)
-                    .frame(height: 300)
-                    .clipped()
-                
-                HStack (alignment: .top){
-                    VStack{
-                        HStack{
-                            Text("Item Name: " + itemName)
-                                .fontWeight(.bold)
-                                .foregroundColor(.black)
-                                .font(.caption)
-                            Spacer()
-                        }
-                        .padding(.horizontal)
-                        
-                        HStack{
-                            Text("Item Price: Rp " + String(itemPrice))
-                                .foregroundColor(.black)
-                                .font(.caption)
-                            Spacer()
-                        }
-                        .padding(.horizontal)
-                    }
-//                    .background(.blue)
+            if (itemImage == "" && itemPrice == 0 && itemName == ""){
+                HStack{
+                    Text("Error, please try again.")
+                        .foregroundColor(.secondary)
                     
-                    VStack{
-                        Button {
-                            dismiss()
-                        } label: {
-                            Text("Edit")
-                                .font(.caption)
-                        }
-                        .frame(width: 50)
-                        .foregroundColor(.white)
-                        .padding(.horizontal)
-                        .padding(.vertical, 6)
-                        .background(.blue)
-                        .cornerRadius(8)
-                        
-                        Button {
-                            dismiss()
-                        } label: {
-                            Text("Close")
-                                .font(.caption)
-                        }
-                        .frame(width: 50)
-                        .foregroundColor(.white)
-                        .padding(.horizontal)
-                        .padding(.vertical, 6)
-                        .background(.blue)
-                        .cornerRadius(8)
-                        
-                        Button {
-                            if let index = itemVM.itemArr.firstIndex(where: { $0.name == itemName }) {
-                                itemVM.itemArr.remove(at: index)
-                                
-                                dismiss()
-                                
-                                let newView = ContentView(totalTodayIncome: totalTodayIncome4, itemVM: itemVM, recentItemsVM: recentItemsVM)
-                                UIApplication.shared.windows.first?.rootViewController = UIHostingController(rootView: newView)
-                            }
-                            
-                        } label: {
-                            Text("Remove")
-                                .font(.caption)
-                        }
-                        .frame(width: 50)
-                        .foregroundColor(.white)
-                        .padding(.horizontal)
-                        .padding(.vertical, 6)
-                        .background(.red)
-                        .cornerRadius(8)
-                        
+                    Button {
+                        dismiss()
+                    } label: {
+                        Text("Close")
                     }
-                    .padding(.horizontal)
-//                    .background(.blue)
                 }
-                .padding(.top)
-                Spacer()
                 
-                
-                
-                
+            } else {
+                VStack{
+                    Image(itemImage)
+                        .resizable()
+                        .scaledToFill()
+                        .frame(maxWidth: .infinity)
+                        .frame(height: 300)
+                        .clipped()
+                    
+                    HStack (alignment: .top){
+                        VStack{
+                            HStack{
+                                Text("Item Name: " + itemName)
+                                    .fontWeight(.bold)
+                                    .foregroundColor(.black)
+                                    .font(.caption)
+                                Spacer()
+                            }
+                            .padding(.horizontal)
+                            
+                            HStack{
+                                Text("Item Price: Rp " + String(itemPrice))
+                                    .foregroundColor(.black)
+                                    .font(.caption)
+                                Spacer()
+                            }
+                            .padding(.horizontal)
+                        }
+                        
+                        VStack{
+                            // Edit Button ======================
+                            Button {
+                                dismiss()
+                            } label: {
+                                Text("Edit")
+                                    .font(.caption)
+                            }
+                            .frame(width: 50)
+                            .foregroundColor(.white)
+                            .padding(.horizontal)
+                            .padding(.vertical, 6)
+                            .background(.blue)
+                            .cornerRadius(8)
+                            
+                            // Remove Button ============================
+                            Button {
+                                if let index = itemVM.itemArr.firstIndex(where: { $0.name == itemName }) {
+                                    itemVM.itemArr.remove(at: index)
+                                    
+                                    dismiss()
+                                    
+                                    let newView = ContentView(totalTodayIncome: totalTodayIncome4, itemVM: itemVM, recentItemsVM: recentItemsVM)
+                                    UIApplication.shared.windows.first?.rootViewController = UIHostingController(rootView: newView)
+                                }
+                                
+                            } label: {
+                                Text("Remove")
+                                    .font(.caption)
+                            }
+                            .frame(width: 50)
+                            .foregroundColor(.white)
+                            .padding(.horizontal)
+                            .padding(.vertical, 6)
+                            .background(.red)
+                            .cornerRadius(8)
+                            
+                            
+                            // Close Button =============================
+                            Button {
+                                dismiss()
+                            } label: {
+                                Text("Close")
+                                    .font(.caption)
+                            }
+                            .frame(width: 50)
+                            .foregroundColor(.white)
+                            .padding(.horizontal)
+                            .padding(.vertical, 6)
+                            .background(.blue)
+                            .cornerRadius(8)
+                            .padding(.top, 40)
+                            
+                        }
+                        .padding(.horizontal)
+            
+                    }
+                    .padding(.top)
+                    Spacer()
+                    
+                    
+                    
+                    
+                }
             }
+            
         }
         
         
