@@ -36,7 +36,9 @@ struct ContentView: View {
                 VStack{
                     HStack (alignment: .top){
                         Image(systemName: "opticaldiscdrive")
+                            .fontWeight(.bold)
                         Text("Daily Earning Tracker")
+                            .fontWeight(.bold)
                         Spacer()
                         Text(date, style: .date)
                             .font(.caption)
@@ -63,7 +65,7 @@ struct ContentView: View {
                                     .padding(.horizontal)
                                     .padding(.bottom)
                                     .foregroundColor(.white)
-
+                                
                                 Spacer()
                             }
                         }
