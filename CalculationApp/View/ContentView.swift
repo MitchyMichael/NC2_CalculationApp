@@ -8,7 +8,8 @@
 import SwiftUI
 
 struct ContentView: View {
-//    @StateObject var totalIncome = TotalIncome()
+    @Environment (\.managedObjectContext) var managedObjCotext
+    @FetchRequest(sortDescriptors: []) var itemsNew: FetchedResults<ItemsNew>
     
     @StateObject var totalTodayIncome: TotalIncome
     @State private var showingResetAlert = false
@@ -31,7 +32,6 @@ struct ContentView: View {
     var body: some View {
         NavigationStack{
             VStack{
-                
                 // Blue Gradient Card =======================================================
                 VStack{
                     HStack (alignment: .top){
@@ -127,27 +127,27 @@ struct ContentView: View {
                     
                     ScrollView(.horizontal){
                         LazyHGrid(rows: rows, alignment: .center) {
-                            ForEach(itemVM.itemArr.reversed(), content: { item in
+                            ForEach(itemsNew) { item in
                                 Button{
                                     showingClickedAlert = true
-                                    thisItemNames = item.name
-                                    thisItemPrices = item.price
+                                    thisItemNames = item.itemName!
+                                    thisItemPrices = Int(item.itemPrice)
                                 } label: {
                                     VStack{
-                                        Image(item.thisimage)
+                                        Image("cappucino")
                                             .resizable()
                                             .scaledToFill()
                                             .frame(width: 80, height: 80, alignment: .center)
                                             .clipped()
                                             .cornerRadius(4)
 
-                                        Text(item.name)
+                                        Text(item.itemName!)
                                             .font(.caption)
                                             .fontWeight(.bold)
                                             .foregroundColor(.black)
                                             .frame(width: 80)
-                                        
-                                        Text("Rp " + item.price.description)
+
+                                        Text("Rp " + item.itemPrice.description)
                                             .font(.caption)
                                             .foregroundColor(.black)
                                             
@@ -160,22 +160,71 @@ struct ContentView: View {
                                 }
 
                                 .alert("Add Item", isPresented: $showingClickedAlert, actions: {
-                                    Button("Yes", action: {
-                                        totalTodayIncome.totalIncome = totalTodayIncome.totalIncome + thisItemPrices
-
-                                        let newItem = RecentItems(name: thisItemNames, price: thisItemPrices, time: getTime(), transactionID: getTransactionID(), date: date)
-
-                                        var mutableItemArr = recentItemsVM.itemArr
-                                        mutableItemArr.append(newItem)
-
-                                        recentItemsVM.itemArr = mutableItemArr
-                                    })
-                                    Button("Cancel", role: .cancel, action: {})
+//                                    Button("Yes", action: {
+//                                        totalTodayIncome.totalIncome = totalTodayIncome.totalIncome + thisItemPrices
+//
+//                                        let newItem = RecentItems(name: thisItemNames, price: thisItemPrices, time: getTime(), transactionID: getTransactionID(), date: date)
+//
+//                                        var mutableItemArr = recentItemsVM.itemArr
+//                                        mutableItemArr.append(newItem)
+//
+//                                        recentItemsVM.itemArr = mutableItemArr
+//                                    })
+//                                    Button("Cancel", role: .cancel, action: {})
                                 }, message: {
-                                    Text("Are you sure you want to add the item? " + thisItemNames + " " + String(thisItemPrices))
+//                                    Text("Are you sure you want to add the item? " + thisItemNames + " " + String(thisItemPrices))
                                 })
 
-                            })
+                            }
+//                            ForEach(itemVM.itemArr.reversed(), content: { item in
+//                                Button{
+//                                    showingClickedAlert = true
+//                                    thisItemNames = item.name
+//                                    thisItemPrices = item.price
+//                                } label: {
+//                                    VStack{
+//                                        Image(item.thisimage)
+//                                            .resizable()
+//                                            .scaledToFill()
+//                                            .frame(width: 80, height: 80, alignment: .center)
+//                                            .clipped()
+//                                            .cornerRadius(4)
+//
+//                                        Text(item.name)
+//                                            .font(.caption)
+//                                            .fontWeight(.bold)
+//                                            .foregroundColor(.black)
+//                                            .frame(width: 80)
+//
+//                                        Text("Rp " + item.price.description)
+//                                            .font(.caption)
+//                                            .foregroundColor(.black)
+//
+//
+//                                    }
+//                                    .padding()
+//                                    .background(.white)
+//                                    .cornerRadius(8)
+//
+//                                }
+//
+//                                .alert("Add Item", isPresented: $showingClickedAlert, actions: {
+//                                    Button("Yes", action: {
+//                                        totalTodayIncome.totalIncome = totalTodayIncome.totalIncome + thisItemPrices
+//
+//                                        let newItem = RecentItems(name: thisItemNames, price: thisItemPrices, time: getTime(), transactionID: getTransactionID(), date: date)
+//
+//                                        var mutableItemArr = recentItemsVM.itemArr
+//                                        mutableItemArr.append(newItem)
+//
+//                                        recentItemsVM.itemArr = mutableItemArr
+//                                    })
+//                                    Button("Cancel", role: .cancel, action: {})
+//                                }, message: {
+//                                    Text("Are you sure you want to add the item? " + thisItemNames + " " + String(thisItemPrices))
+//                                })
+//
+//                            })
                         }
                         .padding(.horizontal)
                     }

@@ -8,6 +8,8 @@
 import SwiftUI
 import PhotosUI
 struct AddMenuView: View {
+    @Environment (\.managedObjectContext) var managedObjContext
+    
     @StateObject var totalTodayIncome2: TotalIncome
     
     @State var newMenuName = ""
@@ -53,10 +55,12 @@ struct AddMenuView: View {
                             
                             print(itemVM.itemArr)
                             
-                            dismiss()
-                            
                             let newView = ContentView(totalTodayIncome: totalTodayIncome2, itemVM: itemVM, recentItemsVM: recentItemsVM)
                             UIApplication.shared.windows.first?.rootViewController = UIHostingController(rootView: newView)
+                            
+                            DataController().addItem(name: newMenuName, price: Int64(newMenuPrice), image: "cappucino", context: managedObjContext)
+                            
+                            dismiss()
                         } label: {
                             Text("Add")
                         }

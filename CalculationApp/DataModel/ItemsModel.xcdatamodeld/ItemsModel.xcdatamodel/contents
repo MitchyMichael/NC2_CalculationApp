@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="21754" systemVersion="22F66" minimumToolsVersion="Automatic" sourceLanguage="Swift" userDefinedModelVersionIdentifier="">
+    <entity name="CheckApp" representedClassName="CheckApp" syncable="YES" codeGenerationType="class">
+        <attribute name="isFirst" optional="YES" attributeType="String"/>
+    </entity>
+    <entity name="ItemsNew" representedClassName="ItemsNew" syncable="YES" codeGenerationType="class">
+        <attribute name="itemId" optional="YES" attributeType="UUID" usesScalarValueType="NO"/>
+        <attribute name="itemImage" optional="YES" attributeType="String" defaultValueString="cappucino"/>
+        <attribute name="itemName" optional="YES" attributeType="String" defaultValueString="Cappucino"/>
+        <attribute name="itemPrice" optional="YES" attributeType="Integer 64" defaultValueString="32000" usesScalarValueType="YES"/>
+    </entity>
+</model>
