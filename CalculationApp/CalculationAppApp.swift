@@ -10,13 +10,17 @@ import SwiftUI
 @main
 struct CalculationAppApp: App {
     @StateObject private var dataController:DataController = DataController()
+    @AppStorage("firstTime") var firstTime = true
     
     var body: some Scene {
         WindowGroup {
             ContentView(totalTodayIncome: TotalIncome(), itemVM: ItemViewModel(), recentItemsVM: RecentItemsViewModel())
                 .environment(\.managedObjectContext, dataController.container.viewContext)
                 .onAppear{
-                    dataController.seedInitialData()
+                    if firstTime {
+                        dataController.seedInitialData()
+                        firstTime = false
+                    }
                 }
         }
     }
