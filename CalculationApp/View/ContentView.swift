@@ -40,8 +40,8 @@ struct ContentView: View {
                         Text("Daily Earning Tracker")
                             .fontWeight(.bold)
                         Spacer()
-//                        Text(date, style: .date)
-//                            .font(.caption)
+                        Text(date, style: .date)
+                            .font(.caption)
                     }
                     .padding(.top)
                     .padding(.horizontal)
