@@ -8,6 +8,10 @@
 import SwiftUI
 
 struct EditMenuView: View {
+    @Environment (\.managedObjectContext) var managedObjCotext
+    @Environment (\.dismiss) var dismiss
+    @FetchRequest(sortDescriptors: []) var itemsNew: FetchedResults<ItemsNew>
+    
     @StateObject var totalTodayIncome3: TotalIncome
     @State var showingClickedAlert = false
     @State var isPresentedSheet = false
@@ -49,29 +53,29 @@ struct EditMenuView: View {
                 
                 ScrollView{
                     LazyVGrid(columns: rows){
-                        ForEach(itemVM.itemArr, content: { item in
+                        ForEach(itemsNew, content: { item in
                             Button{
                                 showingClickedAlert = true
-                                thisItemNames = item.name
-                                thisItemPrices = item.price
-                                thisItemImage = item.thisimage
+                                thisItemNames = item.itemName!
+                                thisItemPrices = Int(item.itemPrice)
+//                                thisItemImage = item.thisimage
                                 
                             } label: {
                                 VStack{
-                                    Image(item.thisimage)
+                                    Image(item.itemImage!)
                                         .resizable()
                                         .scaledToFill()
                                         .frame(width: 80, height: 80, alignment: .center)
                                         .clipped()
                                         .cornerRadius(4)
                                     
-                                    Text(item.name)
+                                    Text(item.itemName!)
                                         .font(.caption)
                                         .fontWeight(.bold)
                                         .foregroundColor(.black)
                                         .frame(width: 80, height: 10)
                                     
-                                    Text("Rp " + item.price.description)
+                                    Text("Rp " + item.itemPrice.description)
                                         .font(.caption)
                                         .foregroundColor(.black)
                                     

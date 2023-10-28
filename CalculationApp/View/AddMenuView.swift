@@ -9,6 +9,7 @@ import SwiftUI
 import PhotosUI
 struct AddMenuView: View {
     @Environment (\.managedObjectContext) var managedObjContext
+    @FetchRequest(sortDescriptors: []) var itemsNew: FetchedResults<ItemsNew>
     
     @StateObject var totalTodayIncome2: TotalIncome
     
@@ -46,17 +47,19 @@ struct AddMenuView: View {
                         Spacer()
                         
                         Button{
-                            let newItem = Items(name: newMenuName, price: newMenuPrice, thisimage: "cappucino")
-                            
-                            var mutableItemArr = itemVM.itemArr
-                            mutableItemArr.append(newItem)
-                            
-                            itemVM.itemArr = mutableItemArr
-                            
-                            print(itemVM.itemArr)
-                            
-                            let newView = ContentView(totalTodayIncome: totalTodayIncome2, itemVM: itemVM, recentItemsVM: recentItemsVM)
-                            UIApplication.shared.windows.first?.rootViewController = UIHostingController(rootView: newView)
+//                            let newItem = Items(name: newMenuName, price: newMenuPrice, thisimage: "cappucino")
+//
+//                            var mutableItemArr = itemVM.itemArr
+//                            mutableItemArr.append(newItem)
+//
+//                            itemVM.itemArr = mutableItemArr
+//
+//                            print(itemVM.itemArr)
+//
+//                            let newView = ContentView(totalTodayIncome: totalTodayIncome2, itemVM: itemVM, recentItemsVM: recentItemsVM)
+//                            UIApplication.shared.windows.first?.rootViewController = UIHostingController(rootView: newView)
+//
+//                            DataController().addItem(name: newMenuName, price: Int64(newMenuPrice), image: "cappucino", context: managedObjContext)
                             
                             DataController().addItem(name: newMenuName, price: Int64(newMenuPrice), image: "cappucino", context: managedObjContext)
                             
