@@ -127,14 +127,14 @@ struct ContentView: View {
                     
                     ScrollView(.horizontal){
                         LazyHGrid(rows: rows, alignment: .center) {
-                            ForEach(itemsNew.reversed()) { item in
+                            ForEach(itemsNew) { item in
                                 Button{
                                     showingClickedAlert = true
                                     thisItemNames = item.itemName!
                                     thisItemPrices = Int(item.itemPrice)
                                 } label: {
                                     VStack{
-                                        Image(item.itemImage!)
+                                        Image("cappucino")
                                             .resizable()
                                             .scaledToFill()
                                             .frame(width: 80, height: 80, alignment: .center)
@@ -150,6 +150,8 @@ struct ContentView: View {
                                         Text("Rp " + item.itemPrice.description)
                                             .font(.caption)
                                             .foregroundColor(.black)
+                                            
+
                                     }
                                     .padding()
                                     .background(.white)
